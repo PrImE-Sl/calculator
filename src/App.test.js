@@ -1,8 +1,11 @@
-import { render, screen } from '@testing-library/react';
-import App from './App';
+const reset = require("./App")
+const calculate = require("./App")
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+test('Calculate should return correct values', () => {
+
+  expect(calculate()).toBe(4)
+})
+
+test('RESET TEST', () => {
+  expect(reset(13)).toBe(setState({ result: "" }))
 });

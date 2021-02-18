@@ -1,25 +1,54 @@
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
+import Buttons from './components/Buttons';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+class App extends Component {
+  constructor() {
+    super();
+    this.state = { result: "" }
+  }
+
+  onClickHandler = button => {
+
+    if (button === "=") { this.calculate() }
+    else if (button === "C") { this.reset() }
+    else if (button === "CE") { this.backspace() }
+
+    else { this.setState({ result: this.state.result + button }) }
+  };
+
+  calculate = () => {
+    let checkResult = this.state.result
+    if (checkResult === '0') this.setState({ result: '0' })
+    try {
+      this.setState({
+        result: (eval(checkResult) || "0") + ""
+      })
+    } catch (e) { this.setState({ result: "error" }) }
+  };
+
+  reset = () => { this.setState({ result: "" }) }
+  backspace = () => { this.setState({ result: this.state.result.slice(0, -1) }) }
+
+  render() {
+    return (
+      <div>
+        <div className="calculator-body">
+          <h1>Simple Calculator</h1>
+
+          <div className="result">
+            <input type="text" placeholder='your text' value={this.state.result} className="form-control"
+              onChange={(e) => { this.setState({ result: e.target.value }) }} />
+            {this.state.result && this.state.result.match(/[^\d%\/*\-+\(\)\.]|Backspace|Enter/) &&
+              <span className='red'>Wrong value!</span>
+            }
+          </div>
+          <Buttons onClick={this.onClickHandler} />
+        </div>
+      </div>
+    );
+  }
 }
 
-export default App;
+export default App
